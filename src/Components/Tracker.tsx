@@ -10,21 +10,17 @@ const Tracker = () => {
   useEffect(() => {
     console.log("Inside the useEffect()");
     // Listener function for messages from background script
-    // const messageListener = (message: any) => {
-    //   console.log("Message: ", message);
-    //   if (message.type === "tabUpdate") {
-    //     const { title, url } = message;
-    //     setActiveTabs((prevTabs) => [...prevTabs, { title, url }]);
-    //   }
-    // };
-
-    chrome.runtime.onMessage.addListener((message) => {
-      console.log(message);
-    });
+    const messageListener = (message: any) => {
+      console.log("Message: ", message);
+      if (message.type === "tabUpdate") {
+        const { title, url } = message;
+        setActiveTabs((prevTabs) => [...prevTabs, { title, url }]);
+      }
+    };
 
     // Cleanup function to remove the listener when component unmounts
     return () => {
-      // chrome.runtime.onMessage.removeListener(messageListener);
+      chrome.runtime.onMessage.removeListener(messageListener);
     };
   }, []);
 
